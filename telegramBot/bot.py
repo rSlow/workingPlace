@@ -2,7 +2,8 @@ import logging
 import os
 
 from aiogram import Bot, Dispatcher
-from aiogram.contrib.fsm_storage.memory import MemoryStorage
+
+from FSM.memory_storage import ModifiedMemoryStorage
 
 
 class CustomBot(Bot):
@@ -10,7 +11,7 @@ class CustomBot(Bot):
 
 
 logging.basicConfig(level=logging.INFO)
-storage = MemoryStorage()
+storage = ModifiedMemoryStorage()
 
 token = os.getenv("BOT_TOKEN")
 

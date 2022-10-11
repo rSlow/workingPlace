@@ -1,3 +1,5 @@
+import logging
+
 from aiogram import types
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters import Text
@@ -34,9 +36,8 @@ async def wait_photos(message: types.Message, state: FSMContext):
 async def append_photo(message: types.Message, state: FSMContext):
     await ImagesZip.waiting.set()
 
-    photo_object: types.PhotoSize = message.photo[-1]
-    await photos.add_photo(state, photo_object)
-
+    file_id = message.photo[-1].file_id
+    await photos.add_photo_file_id(state, file_id)
     await message.delete()
 
 
@@ -45,9 +46,9 @@ async def append_photo(message: types.Message, state: FSMContext):
     state=ImagesZip.waiting
 )
 async def return_zip(message: types.Message, state: FSMContext):
-    photos_list = await photos.get_photos_list(state)
+    file_id_list = await photos.get_file_id_list(state)
 
-    if not photos_list:
+    if not file_id_list:
         await message.answer(
             text="Не было отправлено ни одной фотографии, пробуем еще раз!"
         )
@@ -55,17 +56,22 @@ async def return_zip(message: types.Message, state: FSMContext):
 
     else:
         temp_message = await message.answer(
-            text=f"Запаковывается {len(photos_list)} фотографий..."
+            text=f"Запаковывается {len(file_id_list)} фотографий..."
         )
 
         await ImagesZip.finish.set()
-        zip_file = await photos.get_zip(photos_list)
+        zip_file = await photos.get_zip(file_id_list, bot=message.bot)
 
         await temp_message.delete()
+
+        temp_message = await message.answer(
+            text="Архив отправляется..."
+        )
         await message.answer_document(
             document=zip_file,
             reply_markup=PackAgainKeyboard()
         )
+        await temp_message.delete()
 
 
 @dispatcher.message_handler(

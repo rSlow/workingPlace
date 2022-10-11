@@ -5,4 +5,20 @@ services:
     build: ./telegramBot
     env_file:
       - ./env/aiogram.env
+      - ./env/postgres.env
     restart: always
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres
+    restart: always
+    env_file:
+      - ./env/postgres.env
+    volumes:
+      - pgdata:/var/lib/postgresql/data/pgdata
+    environment:
+      PGDATA: /var/lib/postgresql/data/pgdata
+
+volumes:
+  pgdata:
