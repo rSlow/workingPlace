@@ -1,5 +1,4 @@
 from aiogram.types import ReplyKeyboardMarkup
-from aiogram.types.base import MetaTelegramObject
 
 
 class TypeInterface:

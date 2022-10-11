@@ -8,4 +8,3 @@ class StartKeyboard(BaseKeyboard):
     buttons_list = [
         Buttons.pack
     ]
-

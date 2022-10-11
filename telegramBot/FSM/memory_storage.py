@@ -1,5 +1,3 @@
-import asyncio
-
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 
 from ORM.states import State
