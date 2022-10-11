@@ -34,8 +34,8 @@ async def wait_photos(message: types.Message, state: FSMContext):
 async def append_photo(message: types.Message, state: FSMContext):
     await ImagesZip.waiting.set()
 
-    photo_file_id = message.photo[-1].file_id
-    await photos.add_photo(state, photo_file_id)
+    photo_object: types.PhotoSize = message.photo[-1]
+    await photos.add_photo(state, photo_object)
 
     await message.delete()
 
@@ -54,11 +54,16 @@ async def return_zip(message: types.Message, state: FSMContext):
         await wait_photos(message=message, state=state)
 
     else:
-        await ImagesZip.finish.set()
-        await photos.send_zip(photos_list)
+        temp_message = await message.answer(
+            text=f"Запаковывается {len(photos_list)} фотографий..."
+        )
 
-        await message.answer(
-            text="Отправлено.",
+        await ImagesZip.finish.set()
+        zip_file = await photos.get_zip(photos_list)
+
+        await temp_message.delete()
+        await message.answer_document(
+            document=zip_file,
             reply_markup=PackAgainKeyboard()
         )
 
