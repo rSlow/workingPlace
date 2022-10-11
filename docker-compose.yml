@@ -1,0 +1,8 @@
+version: "3"
+
+services:
+  aiogram:
+    build: ./telegramBot
+    env_file:
+      - ./env/aiogram.env
+    restart: always
