@@ -16,9 +16,9 @@ services:
     env_file:
       - ./env/postgres.env
     volumes:
-      - pgdata:/var/lib/postgresql/data/pgdata
+      - pgdata:/var/lib/postgresql/data/pgdata/workingPlace
     environment:
-      PGDATA: /var/lib/postgresql/data/pgdata
+      PGDATA: /var/lib/postgresql/data/pgdata/workingPlace
 
 volumes:
   pgdata:
