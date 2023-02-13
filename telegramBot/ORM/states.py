@@ -43,7 +43,7 @@ class State(Base):
                 if user is None:
                     user = await cls.add_user(
                         chat_id=chat_id,
-                        user_id=user_id
+                        user_id=user_id,
                     )
                 user.state = state
 

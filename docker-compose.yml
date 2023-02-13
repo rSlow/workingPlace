@@ -20,5 +20,6 @@ services:
     environment:
       PGDATA: /var/lib/postgresql/data/pgdata/workingPlace
 
+
 volumes:
   pgdata:
